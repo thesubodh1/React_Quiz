@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export default function Quiz() {
-    const[activeQuestionIndex,setActiveQuestionIndex]=useState(0);
     const[userAnswers,setUserAnswers] = useState([]);
+    const activeQuestionIndex = userAnswers.length;
     return(
         <p>Curretly active question</p>
     );
