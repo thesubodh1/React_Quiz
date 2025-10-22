@@ -7,7 +7,7 @@ import Answers from "./Answers.jsx";
 export default function Question({
   onSelectAnswer,
   onSkipAnswer,
-  key,
+  questionIndex,
 }) {
   const [answer, setAnswer] = useState({
     selectedAnswer: "",
@@ -39,9 +39,9 @@ export default function Question({
   return (
     <div id="question">
       <QuestionTimer timeout={10000} onTimeout={onSkipAnswer} />
-      <h2>{QUESTIONS[key].text}</h2>
+      <h2>{QUESTIONS[questionIndex].text}</h2>
       <Answers
-        answers={QUESTIONS[key].answers}
+        answers={QUESTIONS[questionIndex].answers}
         selectedAnswer={answer.selectedAnswer}
         answerState={answerState}
         onSelect={handleSelectAnswer}
