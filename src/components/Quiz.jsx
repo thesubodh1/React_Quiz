@@ -13,14 +13,14 @@ export default function Quiz() {
 
   const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback(
-    function handleSelectAnswer(selectedAnswer) {
-      setUserAnswers((previousAnswers) => {
-        return [...previousAnswers, selectedAnswer];
-      });
-    },
-    []
-  );
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(
+    selectedAnswer
+  ) {
+    setUserAnswers((previousAnswers) => {
+      return [...previousAnswers, selectedAnswer];
+    });
+  },
+  []);
 
   const handleSkipANswer = useCallback(
     () => handleSelectAnswer(null),
@@ -39,6 +39,7 @@ export default function Quiz() {
   return (
     <div id="quiz">
       <Question
+        questionIndex={activeQuestionIndex}
         key={activeQuestionIndex}
         onSelectAnswer={handleSelectAnswer}
         onSkipAnswer={handleSkipANswer}

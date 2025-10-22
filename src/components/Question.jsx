@@ -23,18 +23,18 @@ export default function Question({
     setTimeout(() => {
       setAnswer({
         selectedAnswer: answer,
-        isCorrect: QUESTIONS[key].answers[0] === answer,
+        isCorrect: QUESTIONS[questionIndex].answers[0] === answer,
       });
 
       setTimeout(() => {
         onSelectAnswer(answer);
       }, 2000);
     }, 1000);
+  }
 
-    let answerState = "";
-    if (answer.selectedAnswer) {
-      answerState = answer.isCorrect ? "correct" : "wrong";
-    }
+  let answerState = "";
+  if (answer.selectedAnswer) {
+    answerState = answer.isCorrect ? "correct" : "wrong";
   }
   return (
     <div id="question">
