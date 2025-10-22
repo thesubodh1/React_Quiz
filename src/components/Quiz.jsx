@@ -1,11 +1,11 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 
 import QUESTIONS from "../questions.js";
 import quizCompleteImg from "../assets/quiz-complete.png";
 import QuestionTimer from "./QuestionTimer.jsx";
+import Answers from "./Answers.jsx";
 
 export default function Quiz() {
-  const shuffeledAnswers = useRef();
   const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
@@ -52,12 +52,6 @@ export default function Quiz() {
     );
   }
 
-  //   The logic is shifetd below as if quiz is completed than they will give error before the if is executed
-  if (!shuffeledAnswers.current) {
-    shuffeledAnswers.current = [...QUESTIONS[activeQuestionIndex].answers];
-    shuffeledAnswers.current.sort(() => Math.random() - 0.5);
-  }
-
   return (
     <div id="quiz">
       <div id="questions">
@@ -67,35 +61,13 @@ export default function Quiz() {
           onTimeout={handleSkipANswer}
         />
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-        <ul id="answers">
-          {shuffeledAnswers.current.map((answer) => {
-            let cssClass = "";
-
-            const isSelected = userAnswers[userAnswers.length - 1] === answer;
-
-            if (answerState === "answered" && isSelected) {
-              cssClass = "selected";
-            }
-
-            if (
-              (answerState === "correct" || answerState === "wrong") &&
-              isSelected
-            ) {
-              cssClass = answerState;
-            }
-
-            return (
-              <li key={answer} className="answer">
-                <button
-                  onClick={() => handleSelectAnswer(answer)}
-                  className={cssClass}
-                >
-                  {answer}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <Answers
+          answers={QUESTIONS[activeQuestionIndex].answers}
+          selectedAnswer={userAnswers[userAnswers.length - 1]}
+          answerState={answerState}
+          onSelect={handleSelectAnswer}
+          key={activeQuestionIndex}
+        />
       </div>
     </div>
   );
