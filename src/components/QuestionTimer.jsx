@@ -1,43 +1,32 @@
-import { useState, useCallback } from "react";
-import QUESTIONS from "../question.js";
-import quizCompleteImg from "../assets/quiz-complete.png";
-import Question from "./Question.jsx";
-export default function Quiz() {
-  const [userAnswers, setUserAnswers] = useState([]);
-  const activeQuestionIndex = userAnswers.length;
-  const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
+import { useState, useEffect } from "react";
 
-  const handleSelectAnswer = useCallback(function handleSelectAnswer(
-    selectedAnswer
-  ) {
-    setUserAnswers((previousSelectedAnswer) => {
-      return [...previousSelectedAnswer, selectedAnswer];
-    });
-  },
-  []);
+export default function QuestionTimer({ timeout, onTimeout, mode }) {
+  const [remainingTime, setRemainingTime] = useState(timeout);
 
-  const handelSkipAnswer = useCallback(
-    () => handleSelectAnswer(null),
-    [handleSelectAnswer]
-  );
+  useEffect(() => {
+    const timer = setTimeout(onTimeout, timeout);
 
-  if (quizIsComplete) {
-    return (
-      <div id="summary">
-        <img src={quizCompleteImg} alt="trophy icon" />
-        <h2>Quiz is Completed</h2>
-      </div>
-    );
-  }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [onTimeout, timeout]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingTime((previousRemainingTime) => previousRemainingTime - 100);
+    }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <div id="quiz">
-      <Question
-        key={activeQuestionIndex}
-        index={activeQuestionIndex}
-        onSelectAnswer={handleSelectAnswer}
-        onSkipAnswer={handelSkipAnswer}
-      />
-    </div>
+    <progress
+      id="question-time"
+      max={timeout}
+      value={remainingTime}
+      className={mode}
+    />
   );
 }
