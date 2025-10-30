@@ -1,10 +1,8 @@
 import { useRef } from "react";
 
-export default function Answers({ answers, selectedAnswer, answerState,onSelect }) {
+export default function Answers({answers,selectedAnswer, answerState,onSelect}) {
   const shuffeledAnswers = useRef();
-
-  //   The logic is shifetd below as if quiz is completed than they will give error before the if is executed
-  if (!shuffeledAnswers.current) {
+    if (!shuffeledAnswers.current) {
     shuffeledAnswers.current = [...answers];
     shuffeledAnswers.current.sort(() => Math.random() - 0.5);
   }
@@ -12,10 +10,8 @@ export default function Answers({ answers, selectedAnswer, answerState,onSelect 
     <ul id="answers">
       {shuffeledAnswers.current.map((answer) => {
         let cssClass = "";
-
         const isSelected = selectedAnswer === answer;
-
-        if (answerState === "answered" && isSelected) {
+        if (answer === "answered" && isSelected) {
           cssClass = "selected";
         }
 
@@ -25,12 +21,12 @@ export default function Answers({ answers, selectedAnswer, answerState,onSelect 
         ) {
           cssClass = answerState;
         }
-
         return (
           <li key={answer} className="answer">
             <button
               onClick={() => onSelect(answer)}
               className={cssClass}
+              disabled = {answerState !== ""}
             >
               {answer}
             </button>
